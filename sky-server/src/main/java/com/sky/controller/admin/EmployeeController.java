@@ -5,6 +5,7 @@ import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
+import com.sky.enumeration.OperationType;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -125,7 +126,7 @@ public class EmployeeController {
     @ApiOperation("根据id查询员工信息")
     public Result<Employee> getById(@PathVariable Long id){
         Employee employee = employeeService.getById(id);
-        return Result.success();
+        return Result.success(employee);
     }
 
     /**

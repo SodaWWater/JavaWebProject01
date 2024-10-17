@@ -80,13 +80,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
 //        设置账号密码 默认：123456 常量已定义 需用MD5加密
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-//        设置账号创建时间
-        employee.setCreateTime(LocalDateTime.now());
-//        设置账号修改时间
-        employee.setUpdateTime(LocalDateTime.now());
-//     TODO   设置账号创建人id和修改人id
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+////        设置账号创建时间
+//        employee.setCreateTime(LocalDateTime.now());
+////        设置账号修改时间
+//        employee.setUpdateTime(LocalDateTime.now());
+////     TODO   设置账号创建人id和修改人id
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.save(employee);
     }
 
@@ -145,10 +145,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
 
-//        设置账号修改时间
-        employee.setUpdateTime(LocalDateTime.now());
-//         设置修改人id
-        employee.setUpdateUser(BaseContext.getCurrentId());
+////        设置账号修改时间
+//        employee.setUpdateTime(LocalDateTime.now());
+////         设置修改人id
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.update(employee);
     }
