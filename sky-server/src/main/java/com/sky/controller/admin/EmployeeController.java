@@ -118,7 +118,7 @@ public class EmployeeController {
     }
 
     /**
-     * 根据id拆线呢员工信息
+     * 根据id查询员工信息
      * @param id
      * @return
      */
