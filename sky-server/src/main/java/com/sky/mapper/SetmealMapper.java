@@ -1,7 +1,15 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.annotation.AutoFill;
+import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Setmeal;
+import com.sky.enumeration.OperationType;
+import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface SetmealMapper {
@@ -14,4 +22,36 @@ public interface SetmealMapper {
     @Select("select count(id) from setmeal where category_id = #{categoryId}")
     Integer countByCategoryId(Long id);
 
+    /**
+     * 起售/禁止售菜品
+     */
+    @AutoFill(OperationType.UPDATE)
+    void update(Setmeal setmeal);
+
+    /**
+     * 新增套餐
+     * @param setmeal
+     */
+    @AutoFill(OperationType.INSERT)
+    void insert(Setmeal setmeal);
+
+    /**
+     * 分页查询套餐信息
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 根据套餐id查询套餐信息
+     * @param ids
+     * @return
+     */
+    List<Setmeal> selectByIds(List<Long> ids);
+
+    /**
+     * 根据套餐id删除套餐
+     * @param ids
+     */
+    void deleteByIds(List<Long> ids);
 }
