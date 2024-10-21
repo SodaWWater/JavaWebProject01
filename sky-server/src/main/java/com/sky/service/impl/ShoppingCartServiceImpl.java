@@ -5,6 +5,7 @@ import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.ShoppingCart;
+import com.sky.exception.BaseException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.ShoppingCartMapper;
@@ -13,6 +14,7 @@ import com.sky.service.ShoppingCartService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
 
     @Override
+    @Transactional
     public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         //判断当前购物车中是否已经存在当前菜品
         ShoppingCart shoppingCart = new ShoppingCart();
@@ -79,5 +82,44 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .userId(currentId)
                 .build();
         return shoppingCartMapper.list(shoppingCart);
+    }
+
+    /**
+     * 清空购物车
+     */
+    @Override
+    public void cleanShoppingCart() {
+        Long currentId = BaseContext.getCurrentId();
+        shoppingCartMapper.deleteByUserId(currentId);
+    }
+
+    /**
+     * 清空购物车单个商品
+     * @param shoppingCartDTO
+     */
+    @Override
+    @Transactional
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+//        获取当前用户id
+        Long currentId = BaseContext.getCurrentId();
+//        查询当前购物车数据
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO,shoppingCart);
+        shoppingCart.setUserId(currentId);
+//        查询当前要删除数据份数，》1 -1 ，《1 直接删除
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        if (list != null && !list.isEmpty()){
+            shoppingCart = list.get(0);
+        }
+        Integer number = shoppingCart.getNumber();
+        if (number == 1){
+            shoppingCartMapper.deleteById(shoppingCart.getId());
+        }else if(number > 1){
+            shoppingCart.setNumber(number - 1);
+            shoppingCartMapper.updateNumberById(shoppingCart);
+        }else {
+            throw  new BaseException("购物车商品数量数据异常");
+        }
+
     }
 }
