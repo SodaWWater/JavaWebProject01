@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("userOrderController")
 @RequestMapping("/user/order")
 @Slf4j
 @Api(tags = "订单相关")
@@ -50,8 +50,33 @@ public class OrderController {
      */
     @GetMapping("/orderDetail/{id}")
     @ApiOperation("查询订单详情")
-    public Result<OrderVO> xx(@PathVariable Long id){
+    public Result<OrderVO> details(@PathVariable Long id){
         OrderVO orderVO =  orderService.details(id);
         return Result.success(orderVO);
+    }
+
+    /**
+     * 取消订单
+     * @param id
+     * @return
+     */
+    @PutMapping("/cancel/{id}")
+    @ApiOperation("取消订单")
+    public Result cancel(@PathVariable Long id){
+        orderService.userCancelById(id);
+        return Result.success();
+    }
+
+    /**
+     * 再来一单
+     *
+     * @param id
+     * @return
+     */
+    @PostMapping("/repetition/{id}")
+    @ApiOperation("再来一单")
+    public Result repetition(@PathVariable Long id) {
+        orderService.repetition(id);
+        return Result.success();
     }
 }
