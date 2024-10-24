@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -45,4 +46,19 @@ public interface OrderMapper {
 
     @Select("select  * from sky_take_out.orders where status = #{status} and order_time < #{orderTime}")
     List<Orders> getByStatusOrderTimeLT(Integer status, LocalDateTime orderTime);
+
+
+    /**
+     * 营业额查询
+     * @param map
+     * @return
+     */
+    Double sumByMap(Map map);
+
+    /**
+     * 订单数查询
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
